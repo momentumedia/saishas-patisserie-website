@@ -1,170 +1,222 @@
 # CLAUDE.md
 
-Instructions for any coding agent working on this repo. Read this first.
+Guidance for any coding agent working on this repo. Read this first.
 
-## Top priorities (non-negotiable)
+## Top rules (non-negotiable)
 
-1. **Only use real photos from `images/real/`** — never introduce stock photos (Unsplash, Pexels, etc.) without explicit user approval. If a menu item has no real photo, use the `.no-photo` card variant.
-2. **No em dashes (`—`) or en dashes (`–`) in prose.** Use periods, commas, or `·` (middle dot). Hyphens in compound words (pre-order, three-day) are fine. This is a hard rule — the user finds em dashes "too AI."
-3. **Never fabricate facts.** Don't invent stats ("three-day lamination", "photographed this morning"), press mentions, founder backstories, or operational details. The brand positioning ("French-Japanese fusion") was inferred from menu items (black sesame choux, yuzu tart, Hokkaido matcha). If unsure, leave a TODO.
-4. **Order Online CTA is a placeholder.** `href="#"` everywhere until the client wires up Square's Orders API. Do NOT link it to Uber Eats.
-5. **Downtown Dollars means accept, not serve.** It's a local London, ON gift-certificate program. "Accept Downtown Dollars" is correct.
+1. **Only real photos from `images/real/`.** Never introduce stock imagery (Unsplash/Pexels/etc.). If a menu item has no real photo, use the `.menu-item.no-photo` card variant.
+2. **No em dashes (`—`) or en dashes (`–`) anywhere in prose.** Use periods, commas, or `·` (middle dot). Hyphens in compound words are fine. The client calls em dashes "too AI" — this is a hard rule.
+3. **Never fabricate facts.** Don't invent stats ("three-day lamination"), press mentions, founder bios, or operational claims. The "French-Japanese" framing was inferred from menu items (yuzu, black sesame, Hokkaido matcha) and may be adjusted later.
+4. **Order Online is a placeholder.** Every "Order Online" CTA uses `href="#"` until Square Orders API is wired. Do NOT point it to Uber Eats.
+5. **"Accept Downtown Dollars", not "serve".** It's a local London, ON gift-certificate program, not food.
+6. **Cloudflare blocks scraping `saishaspatisserie.ca`.** Don't waste effort trying; ask the user to paste real copy.
+
+---
 
 ## Project overview
 
-- **What it is:** Static marketing + menu website for Saisha's Pâtisserie, a real bakery at Unit 4-208 Piccadilly Street, London, Ontario.
-- **Primary users:** Prospective customers browsing the menu, ordering whole cakes, visiting the shop. Secondary: the owner reviewing the rebuild vs. old site.
-- **Business goal:** Replace the current Weebly/EditMySite-based `saishaspatisserie.ca`. Improve SEO, mobile, speed, brand feel, and conversion to first-party ordering.
-- **The old site:** JavaScript-rendered behind Cloudflare. Scraping blocked. The `audit.html` page documents the old site's problems; do not delete it.
+- **What:** Static marketing + menu website for Saisha's Pâtisserie, a bakery at Unit 4-208 Piccadilly Street, London, Ontario.
+- **Users:** Prospective customers browsing the menu, ordering whole cakes, checking hours/location.
+- **Business goal:** Replace the current Weebly-based `saishaspatisserie.ca`. Improve SEO, mobile, speed, brand feel, and conversion to first-party ordering.
+- **Live URL:** https://momentumedia.github.io/saishas-patisserie-website/
+- **Repo:** https://github.com/momentumedia/saishas-patisserie-website (public)
 
 ## Tech stack
 
-- **Pure static:** HTML5 + CSS3 + vanilla JavaScript. No framework, no bundler, no package.json.
-- **No build step.** Open `index.html` in a browser — that's the dev loop.
-- **External deps:** Google Fonts (Cormorant Garamond, Inter, Dancing Script), Google Maps embed iframe.
-- **Deployment target:** TODO — not yet deployed. Should deploy to Netlify, Cloudflare Pages, or GitHub Pages (no server required).
+- **Language:** HTML5 + CSS3 + vanilla JavaScript. No framework.
+- **Package manager:** None. No `package.json`.
+- **Build tools:** None. File-system static site.
+- **External services:**
+  - Google Fonts (Cormorant Garamond, Inter, Dancing Script)
+  - Google Maps embed iframe (contact page)
+  - Square gift card link (`app.squareup.com/gift/MLR6V0DSDRDC0/order`)
+- **Hosting:** GitHub Pages (main branch, `/` root). Auto-deploys on push.
+- **Env/config:** None. All values are hardcoded in HTML. No secrets in repo.
 
 ## Repo structure
 
 ```
 saishas-patisserie/
 ├── index.html              Home
-├── menu.html               Full menu (Individual Cakes, Whole Cakes, Pastries, Viennoiseries, Easter, Drinks & Pantry)
-├── about.html              Story + What We Believe + Neighbourhood (kept SHORT)
-├── gallery.html            Editorial magazine-style chapters (Signatures, Viennoiseries, Tarts, Whole Cakes, Seasonal, Packaging)
-├── order.html              Placeholder ordering page
+├── menu.html               Full menu (Individual Cakes, Whole Cakes, Pastries, Viennoiseries, Easter Chocolate Buddies, Drinks & Pantry)
+├── about.html              Story + What We Believe + Neighbourhood. Keep SHORT.
+├── gallery.html            Editorial chapters (Signatures, Viennoiseries, Tarts, Whole Cakes, Easter, Packaging)
+├── order.html              Placeholder ordering page (not linked from nav)
 ├── contact.html            Quick-action tiles + hours + form + social + map
 ├── audit.html              Old-site audit (AIRMS-style: 3 Critical / 3 High / 3 Medium)
 ├── css/
-│   ├── main.css            Design tokens, typography, layout, buttons, utilities
+│   ├── main.css            Tokens, reset, typography, layout, buttons, utilities
 │   └── components.css      Nav, hero, marquee, cards, gallery, forms, footer, allergen, social SVG
 ├── js/
-│   └── main.js             Nav scroll state, mobile toggle, fade-up IntersectionObserver, menu tab smooth-scroll, gallery filters, lightbox
-└── images/
-    ├── real/               ⭐ All real Saisha's product photos (webp mostly). Source of truth.
-    ├── hero/               hero-croissants.jpg (homepage background), hero-real.jpg (spread)
-    ├── gallery/            Copies of real photos for legacy refs
-    └── logo/               logo-dark.png (nav, black-on-transparent), logo-transparent.png (footer, white-on-transparent). DO NOT use .jpg versions.
+│   └── main.js             Nav scroll + mobile toggle, fade-up IntersectionObserver, menu tab scroll, gallery filters, lightbox
+├── images/
+│   ├── real/               ⭐ Real Saisha's photos. Source of truth.
+│   ├── hero/               Hero backgrounds
+│   ├── gallery/            Legacy copies of real photos
+│   └── logo/               logo-dark.png (nav), logo-transparent.png (footer). Do NOT reference the .jpg versions.
+├── CLAUDE.md               This file
+└── .gitignore
 ```
+
+No tests, scripts, docs, or shared directories exist. No backend.
 
 ## Local development
 
-- **Dev loop:** `open index.html` on macOS. No server needed.
-- **Live-reload (optional):** `python3 -m http.server 8000` from repo root, then `http://localhost:8000`.
-- **No install/build/test/lint commands** — intentionally no tooling.
+- **Install:** None. Just clone.
+- **Dev / run:** `open index.html` on macOS. Or `python3 -m http.server 8000` from repo root.
+- **Build:** None.
+- **Test:** None.
+- **Lint/format/typecheck:** None.
 
 ## Definition of done
 
 Before calling any change complete:
 
-1. **No broken image refs.** Run:
+1. **No broken image refs:**
    ```bash
    grep -hoE 'images/[a-zA-Z0-9/_.-]+\.(jpg|jpeg|png|webp|svg)' *.html css/*.css | sort -u | while read -r img; do [ ! -f "$img" ] && echo "MISSING: $img"; done
    ```
-2. **No em dashes.** Run: `grep -c '—' *.html` — must be 0 for every file.
-3. **Open `index.html`** in browser. Check: nav logo + CTA render, hero reads correctly, all sections load, no console errors.
-4. **Mobile check:** browser dev tools at 375px. Nav collapses, hero is readable, grids stack.
-5. **All nav links work** across every page (check for dead links after structural changes).
+2. **No em dashes:** `grep -c '—' *.html` must return 0 for every page.
+3. **Open `index.html`** in browser. Check: nav logo renders, hero reads, all sections load, no console errors.
+4. **Mobile check:** dev tools at 375px. Nav collapses, grids stack.
+5. **Cross-page nav check:** click every nav link on at least the page you changed.
+6. **Commit pushed** to `main` — GitHub Pages redeploys automatically.
 
 ## Coding rules
 
 ### HTML
-- Semantic tags: `<section>`, `<article>`, `<figure>`, `<nav>`, `<header>`, `<footer>`.
-- Every image needs `alt` text. Real product photos: use the actual item name.
+- Semantic: `<section>`, `<article>`, `<figure>`, `<nav>`, `<header>`, `<footer>`.
+- Every `<img>` needs meaningful `alt`. Real product photos: use the item name.
 - Every external link: `target="_blank" rel="noopener"`.
-- Phone numbers use `tel:`, emails use `mailto:`.
+- Phone: `tel:`. Email: `mailto:`.
 - Breadcrumb on every inner page.
+- `<head>` block should stay consistent across pages (fonts, meta, favicon).
 
 ### CSS
-- **Design tokens live in `css/main.css` `:root`.** Don't hardcode colours — use `var(--rose)`, `var(--ink)`, etc.
-- **Two stylesheets only:** `main.css` (tokens, reset, type, layout, utilities) and `components.css` (everything else). Don't create new CSS files.
-- Mobile-first media queries: `@media (max-width: 900px)` etc.
-- **Consistent naming:** kebab-case classes (`.menu-item`, `.hero-content`). BEM-ish modifiers (`.menu-item.no-photo`, `.audit-issue.critical`).
-- Animations: use `var(--ease)` (`cubic-bezier(0.16, 1, 0.3, 1)`) and the existing `var(--t-fast|med|slow)` durations.
+- **Design tokens in `css/main.css :root`.** Don't hardcode colours — use `var(--rose)`, `var(--ink)`, etc.
+- **Two stylesheets only:** `main.css` + `components.css`. Don't add more.
+- Mobile-first: `@media (max-width: 900px)`, `(max-width: 540px)`, etc.
+- Kebab-case classes. BEM-ish modifiers (`.menu-item.no-photo`, `.audit-issue.critical`).
+- Animations use `var(--ease)` and `var(--t-fast|med|slow)`.
+- New components go in `components.css` under a `/* ========= SECTION ========= */` header.
 
 ### JavaScript
-- **One file only:** `js/main.js`. Don't add dependencies or split into modules.
-- Pure vanilla DOM. No jQuery, no frameworks.
-- Feature-detect (`if (lb)` before attaching lightbox listeners, etc.).
-- Use IntersectionObserver for any scroll-triggered reveal — never scroll events for performance.
+- **One file only:** `js/main.js`. No deps, no modules, no frameworks.
+- Feature-detect before attaching listeners (`if (lb) …`).
+- Use IntersectionObserver for scroll reveals, never `scroll` events.
+- Keep under ~200 lines.
 
 ### Writing / copy
-- **Voice:** first-person plural ("we"), warm, confident, specific. Not "passionate" or "curated."
-- **Short sentences.** Use periods not commas when possible.
-- **Prices always with `$` prefix** (Canadian context, no "CAD" unless explicitly needed).
-- **Hours format:** "Tuesday to Thursday · 9am to 5pm" (not "9am-5pm" or "9am–5pm").
-- **No phrases to avoid:** "three-day lamination", "photographed this morning", "signature since 1992", "artisan" (overused), "curated selection", "passionately crafted".
-- **Google review quote** lives on home page only. Don't duplicate.
+- **Voice:** first-person plural ("we"), warm, confident, specific.
+- Short sentences. Periods > commas.
+- Prices: `$` prefix (Canadian context, omit "CAD" unless needed).
+- Hours format: "Tuesday to Thursday · 9am to 5pm".
+- **Banned phrases:** "three-day lamination", "photographed this morning", "passionately crafted", "curated selection", "artisan" (overused), made-up founder details.
+- Google review quote lives on the **home page only**. Don't duplicate.
 
 ### File/component size
-- HTML pages: all sections inline is fine (no partials). Keep `<head>` consistent across pages.
-- CSS: `components.css` is long (1000+ lines). Acceptable. New components go in logical sections with a `/* ========= */` comment header.
-- JS: keep it under 200 lines. Split only if it legitimately doubles.
+- HTML pages: all sections inline is fine; no partials.
+- `components.css` is ~1000 lines — acceptable. Keep sections grouped.
+- Keep `js/main.js` tight.
+
+### Comments / docstrings
+- Default to **no comments**. Only add when the why is non-obvious (workaround, constraint).
+- Never comment what the code does — names should do that.
+
+### Refactor vs patch
+- **Patch** for small copy/style tweaks.
+- **Refactor** only when a section has accumulated multiple inconsistent patterns (e.g. mixed logo paths, mixed CTA styles). Touch the minimum number of files.
+
+## Testing guidance
+
+- **No automated tests.** No `tests/` directory.
+- **Manual verification only:** image refs (grep), em-dash check (grep), browser render, mobile viewport.
+- Don't introduce a test framework without the user asking.
 
 ## UI/UX rules
 
 - **Design system:**
-  - Fonts: Cormorant Garamond (display, italic for headers), Inter (body), Dancing Script (script accent)
-  - Palette: cream/ivory backgrounds, ink text, rose + gold accents. See `main.css :root`.
-  - Buttons: `.btn-primary` (ink), `.btn-ghost` (outlined ink), `.btn-gold` (gold), `.btn-outline-light` (on dark).
-- **Responsive:** test at 375 / 768 / 1024 / 1440. Grids must reflow to 1 column on mobile.
-- **Accessibility:** alt text on all images, aria-labels on icon-only links, focus states on interactive elements. Colour contrast passes WCAG AA.
-- **Animations:** subtle `fade-up` on scroll, hover scales on photos (1s ease). No jarring motion.
-- **One primary CTA per section.** Multiple menu CTAs on the About page was explicitly called out as wrong.
+  - Display font: Cormorant Garamond (italic for most headers)
+  - Body: Inter
+  - Script accent: Dancing Script (used sparingly, hero + intro signature)
+  - Palette: cream/ivory bg, ink text, rose + gold accents. See `main.css :root`.
+  - Button variants: `.btn-primary` (ink), `.btn-ghost` (outlined ink), `.btn-gold`, `.btn-outline-light` (on dark bg).
+- **Responsive:** test at 375 / 768 / 1024 / 1440. Grids collapse to 1 column on mobile.
+- **Accessibility:** `alt` on every image, `aria-label` on icon-only links, visible focus states, WCAG AA contrast.
+- **Motion:** subtle `fade-up` on scroll + 1s ease hover scales on photos. No jarring animation.
+- **One primary CTA per section.** About page had multiple menu CTAs — that was explicitly called out as wrong.
+- **Loading/empty/error states:** N/A (fully static). If the Square API is integrated later, add proper states then.
 
 ## Menu data rules
 
-- **Categories** match the real site exactly: Individual Cakes, Whole Cakes, Pastries, Viennoiseries, Easter Chocolate Buddies, Drinks & Pantry.
-- **Prices** on menu.html come from multiple sources — Uber Eats JSON-LD has markup, direct-site prices are lower. Always prefer direct-site prices when known.
-  - Known verified direct prices: Choux à la Crème $5.50, Raspberry-Almond Croissant $6.50, Tiramisu $14.25, Choco-Hazelnut Tart $10.75.
-  - Uber Eats prices left elsewhere need verification — mark with TODO if changing.
-- **Allergens:** use the `.allergen` pill component for Nuts (and future dairy/gluten). Goes under the `.menu-item-tags` row, separated by a dashed border.
-- **Photoless items:** use `.menu-item.no-photo` with `.mono` label (e.g. `— cake`, `— viennoiserie`).
+- **Categories** mirror the real site exactly: Individual Cakes, Whole Cakes, Pastries, Viennoiseries, Easter Chocolate Buddies, Drinks & Pantry.
+- **Verified direct prices:** Choux à la Crème $5.50, Raspberry-Almond Croissant $6.50, Tiramisu $14.25, Choco-Hazelnut Tart $10.75.
+- Other prices likely came from Uber Eats (with marketplace markup) — leave a `TODO` in a comment if you see one that needs verification.
+- **Allergens:** use the `.allergen` pill component for nuts. Goes under `.menu-item-tags`, separated by a dashed border.
+- **Photoless items:** `.menu-item.no-photo` with `.mono` label (e.g. `— cake`, `— viennoiserie`).
 
 ## Gallery rules
 
-- Photos are organized by **chapter**, not infinite masonry.
+- Organized by **chapter** (Signatures, Viennoiseries, etc.), not infinite masonry.
 - Hover reveals `<figcaption>` with item name + one-line description.
 - Click opens lightbox with caption (pulled from `data-name` or figcaption h4).
-- **Never show the same photo twice in one chapter.**
+- **Don't show the same photo twice** in one chapter.
+
+## API / data rules
+
+- No APIs yet. Site is fully static.
+- **Forms** (newsletter, contact, pre-order) use `mailto:` as the action. Not a real service.
+- When the client wires up **Square Orders API** later:
+  - Keep all keys/tokens out of the repo. Use env vars + a serverless function or dedicated backend.
+  - Don't embed Square customer IDs or PII in the HTML.
+
+## Security / privacy
+
+- **No secrets in code.** Site is fully public.
+- **No PII or analytics** currently shipped. If analytics is added, use a privacy-respecting option (Plausible, Fathom) — no Google Analytics without discussion.
+- No auth or sessions.
+- Google Maps iframe and Square gift card link are the only external embeds.
 
 ## Git / workflow rules
 
-- Remote: `https://github.com/momentumedia/saishas-patisserie-website` (private).
-- Default branch: `main`.
-- Commit messages: short subject + body when needed. Current convention: "Initial commit: ..." style.
-- **Never commit** `.DS_Store`, `.env`, or any files ignored by `.gitignore`.
-- **Never rewrite history** on `main` (no force-push).
-- **Ask before** deleting images, renaming routes, or changing the git remote.
+- **Remote:** `https://github.com/momentumedia/saishas-patisserie-website` (public, GitHub Pages deploys from `main`).
+- **Default branch:** `main`. Working branches optional; small changes go straight to `main`.
+- **Commits:** Short imperative subject. Body if it helps ("Fix nav logo sizing on mobile"). Don't commit AI boilerplate co-author lines unless the user wants them.
+- **Never:** force-push `main`, rewrite history, or change the git remote without asking.
+- **Don't commit:** `.DS_Store`, `.env`, secrets, or unrelated files. Keep commits focused on one change.
+- **Deploy:** happens automatically via GitHub Pages on push to `main` (~1 minute).
+- **Destructive actions** (deleting images, renaming routes, changing the remote) require explicit user approval.
+
+## Review checklist (run before finishing)
+
+- [ ] `grep -c '—' *.html` returns 0 on every page
+- [ ] No broken image refs (run the grep from "Definition of done")
+- [ ] Changed pages open in browser, no console errors
+- [ ] Mobile layout at 375px doesn't break
+- [ ] No new stock photos
+- [ ] No fabricated facts added to copy
+- [ ] Nav + footer still consistent across all 7 pages
+- [ ] Single commit with a meaningful message
+- [ ] Pushed to `main` (live site updates automatically)
 
 ## Known pitfalls
 
-- **Cloudflare blocks scraping of `saishaspatisserie.ca`.** Don't spend effort trying to fetch content from it. Ask the user to paste real copy.
-- **The `hero-croissants.jpg` image is Unsplash**, not Saisha's. User approved it specifically — don't remove unless replacing with a real equivalent.
-- **`audit.html` has a different nav** (no Gift Card link, "New Site" button instead of "Order Online"). Keep that intentional.
-- **`order.html` exists** but all nav/CTAs link to `#` instead. The page itself remains until Square API is wired up.
-- **Logos:** `logo-dark.png` is for light backgrounds (nav), `logo-transparent.png` is for dark backgrounds (footer). The `.jpg` versions in the logo folder are legacy originals, don't reference them.
-- **Instagram embed is faked** — tiles link to @saisha.patisserie but use curated real photos, not actual IG posts.
-- **Newsletter form** posts to `mailto:saishaspatisserie@gmail.com`. No real email service integration. TODO: wire Mailchimp/Klaviyo.
+- **Cloudflare blocks `saishaspatisserie.ca` scraping.** Don't attempt; ask user for real copy.
+- **`hero-croissants.jpg` is Unsplash**, not Saisha's. User explicitly approved. Don't swap unless replacing with a real photo.
+- **`audit.html` has a different nav** (no Gift Card link, CTA says "New Site"). That's intentional.
+- **`order.html` exists** but nothing links to it yet (all CTAs point to `#`). Don't delete; repurpose when Square is wired up.
+- **Logo variants:** `logo-dark.png` for light bg (nav), `logo-transparent.png` for dark bg (footer). The `.jpg` files in `images/logo/` are legacy originals — don't use them.
+- **Instagram grids are faked:** tiles link to @saisha.patisserie but display curated real product photos, not actual IG posts.
+- **`components.css` is long.** Section headers matter. Don't break naming when adding new sections.
+- **About page length is closely watched.** The user has asked for it to be more concise several times. Keep it minimal.
 
 ## TODOs
 
-- [ ] Replace hero-croissants.jpg with a real Saisha's photo when one is available
+- [ ] Get real About page copy from the owner (currently inferred — "French-Japanese" framing not verified)
+- [ ] Add a page for the owner's other restaurant (name + details pending from user)
 - [ ] Wire Order Online buttons to Square Orders API when available
-- [ ] Replace mailto-based newsletter with Mailchimp/Klaviyo
-- [ ] Get the real About page copy from the owner (currently inferred)
-- [ ] Add a page for the owner's other restaurant (name + details pending)
-- [ ] Deploy: Netlify or Cloudflare Pages recommended
-- [ ] Favicon optimization (use a proper multi-size .ico)
-- [ ] Verify all menu.html prices against direct-site pricing
-
-## Review checklist before finishing any task
-
-- [ ] `grep -c '—' *.html` returns 0 on every page
-- [ ] No broken image refs (run the grep command in Definition of Done)
-- [ ] Changed pages open in browser without console errors
-- [ ] Mobile layout doesn't break at 375px
-- [ ] No new stock photos introduced
-- [ ] No fabricated facts added to copy
-- [ ] Nav + footer consistent with other pages
-- [ ] Git commit has meaningful message, no unrelated files staged
+- [ ] Replace mailto newsletter with Mailchimp/Klaviyo or similar
+- [ ] Swap `hero-croissants.jpg` for a real Saisha's hero photo when available
+- [ ] Verify all remaining menu prices against direct-site pricing
+- [ ] Proper multi-size favicon (currently a cropped PNG)
+- [ ] Consider custom domain (e.g. `www.saishaspatisserie.ca`) instead of GitHub Pages URL
