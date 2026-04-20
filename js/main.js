@@ -53,7 +53,9 @@ if (menuTabs.length) {
       } else {
         const el = document.getElementById(target);
         if (el) {
-          const offset = 160; // for sticky nav + sticky tabs
+          const navEl = document.querySelector('.nav');
+          const menuNav = document.querySelector('.menu-nav');
+          const offset = (navEl?.offsetHeight || 0) + (menuNav?.offsetHeight || 0) + 12;
           const y = el.getBoundingClientRect().top + window.scrollY - offset;
           window.scrollTo({ top: y, behavior: 'smooth' });
         }
