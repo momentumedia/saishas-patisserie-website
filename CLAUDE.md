@@ -116,7 +116,7 @@ Before calling any change complete:
 
 ### File/component size
 - HTML pages: all sections inline is fine; no partials.
-- `components.css` is ~1000 lines — acceptable. Keep sections grouped.
+- `components.css` is ~2000 lines. Keep the `/* ========= SECTION ========= */` headers. A "Mobile tightening" block lives at the bottom and holds the ≤640px overrides.
 - Keep `js/main.js` tight.
 
 ### Comments / docstrings
@@ -142,6 +142,13 @@ Before calling any change complete:
   - Palette: cream/ivory bg, ink text, rose + gold accents. See `main.css :root`.
   - Button variants: `.btn-primary` (ink), `.btn-ghost` (outlined ink), `.btn-gold`, `.btn-outline-light` (on dark bg).
 - **Responsive:** test at 375 / 768 / 1024 / 1440. Grids collapse to 1 column on mobile.
+- **Mobile behaviour (≤640px) that is intentional, don't "fix" it:**
+  - `--nav-h` is overridden from 96px to 72px, and the nav logo shrinks to 46px. `.menu-nav`, hero padding, and page-header padding all key off `--nav-h`, so they follow.
+  - **Home "Popular" grid** becomes a horizontal snap-scroll carousel (`.featured-grid` → `display: flex; overflow-x: auto; scroll-snap-type: x mandatory`, cards at `flex: 0 0 78%`). This is deliberate. Keep four items so the rail has enough cards to swipe.
+  - **Menu-page category tabs** become a single-row horizontal scroller at ≤900px (`.menu-nav-inner` sets `flex-wrap: nowrap; overflow-x: auto`). Don't revert to wrapping rows, it eats vertical space and pushes content off-screen.
+  - **`.menu-grid.fade-up` is force-visible on mobile.** The IntersectionObserver threshold (0.12) doesn't fire when the tab-scroll lands at a category header with only the title in view, so the grid below stayed invisible. The override is in the "Mobile tightening" block in `components.css`. If you remove it, Individual Cakes will appear empty again.
+  - **Menu-tab scroll offset** in `js/main.js` reads `nav.offsetHeight + menuNav.offsetHeight` live. Don't re-hardcode a pixel offset; it breaks the moment nav sizes change.
+  - **About → What We Believe** cards have a mobile-only override (tighter padding, smaller emoji, constrained paragraph width). The user explicitly asked for this to stay compact.
 - **Accessibility:** `alt` on every image, `aria-label` on icon-only links, visible focus states, WCAG AA contrast.
 - **Motion:** subtle `fade-up` on scroll + 1s ease hover scales on photos. No jarring animation.
 - **One primary CTA per section.** About page had multiple menu CTAs — that was explicitly called out as wrong.
@@ -204,6 +211,7 @@ Before calling any change complete:
 - **Cloudflare blocks `saishaspatisserie.ca` scraping.** Don't attempt; ask user for real copy.
 - **`hero-croissants.jpg` is Unsplash**, not Saisha's. User explicitly approved. Don't swap unless replacing with a real photo.
 - **`audit.html` has a different nav** (no Gift Card link, CTA says "New Site"). That's intentional.
+- **"Site Audit" nav link** is present on every page (gold-coloured, placed after Contact and before Order Online). It points to `audit.html`. If you add a new page, add this link to keep nav consistent.
 - **`order.html` exists** but nothing links to it yet (all CTAs point to `#`). Don't delete; repurpose when Square is wired up.
 - **Logo variants:** `logo-dark.png` for light bg (nav), `logo-transparent.png` for dark bg (footer). The `.jpg` files in `images/logo/` are legacy originals — don't use them.
 - **Instagram grids are faked:** tiles link to @saisha.patisserie but display curated real product photos, not actual IG posts.
