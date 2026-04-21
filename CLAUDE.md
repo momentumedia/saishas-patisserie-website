@@ -18,8 +18,11 @@ Guidance for any coding agent working on this repo. Read this first.
 - **What:** Static marketing + menu website for Saisha's Pâtisserie, a bakery at Unit 4-208 Piccadilly Street, London, Ontario.
 - **Users:** Prospective customers browsing the menu, ordering whole cakes, checking hours/location.
 - **Business goal:** Replace the current Weebly-based `saishaspatisserie.ca`. Improve SEO, mobile, speed, brand feel, and conversion to first-party ordering.
+- **Status:** **Pitch / mockup.** The sale is NOT closed. This site is being sent to the owner as a free mockup to win the work. Treat every change as "would I want the client to see this in their inbox?" Avoid making promises in copy (e.g. don't claim features that aren't built).
 - **Live URL:** https://momentumedia.github.io/saishas-patisserie-website/
 - **Repo:** https://github.com/momentumedia/saishas-patisserie-website (public)
+- **Agency:** Built by **Launchpad Media Canada** (`launchpadmediacanada@gmail.com`, (519) 691-6771, launchpadmediacanada.ca). Offer: $250 one-time build, ~3 days, optional $29/mo maintenance, add-ons from $99. See `../../momentum-ai/CLAUDE.md` for agency-level rules.
+- **Client contact (on the site):** `saishaspatisserie@gmail.com`, (226) 504-5235. These are already baked into contact.html, index.html schema, and every mailto form. Don't remove them.
 
 ## Tech stack
 
@@ -211,7 +214,8 @@ Before calling any change complete:
 - **Cloudflare blocks `saishaspatisserie.ca` scraping.** Don't attempt; ask user for real copy.
 - **`hero-croissants.jpg` is Unsplash**, not Saisha's. User explicitly approved. Don't swap unless replacing with a real photo.
 - **`audit.html` has a different nav** (no Gift Card link, CTA says "New Site"). That's intentional.
-- **"Site Audit" nav link** is present on every page (gold-coloured, placed after Contact and before Order Online). It points to `audit.html`. If you add a new page, add this link to keep nav consistent.
+- **"Site Audit" nav link** is present on every page (gold-coloured, placed after Contact and before Order Online). It points to `audit.html`. If you add a new page, add this link to keep nav consistent. **Site Audit is the ONLY nav link that uses the gold colour.** The client flagged that too many gold items felt cluttered.
+- **Gift Card nav link must NOT be gold.** It previously had `style="color:var(--gold);"` and the client asked for it to look like every other nav link. Leave it plain. The gold `.btn-gold` "Purchase a Gift Card" button on the home-page gift-card section is unaffected and should stay gold.
 - **`order.html` exists** but nothing links to it yet (all CTAs point to `#`). Don't delete; repurpose when Square is wired up.
 - **Logo variants:** `logo-dark.png` for light bg (nav), `logo-transparent.png` for dark bg (footer). The `.jpg` files in `images/logo/` are legacy originals — don't use them.
 - **Instagram grids are faked:** tiles link to @saisha.patisserie but display curated real product photos, not actual IG posts.
